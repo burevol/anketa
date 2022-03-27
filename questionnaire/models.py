@@ -23,8 +23,15 @@ class Questionnaires(models.Model):
 
 
 class Questions(models.Model):
+    questionnaire = models.ForeignKey(Questionnaires, on_delete=models.CASCADE, verbose_name='Questionnaire')
+    order = models.IntegerField(default=0, verbose_name='Order')
+    header = models.CharField(max_length=255, verbose_name='Header')
+
+
+class Answers(models.Model):
     questionnaire = models.ForeignKey(Questionnaires, verbose_name='Questionnaire', on_delete=models.CASCADE)
-    text = models.CharField(max_length=255, verbose_name='Question')
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE, verbose_name='Sequence')
+    text = models.CharField(max_length=255, verbose_name='Answer')
     right_answer = models.BooleanField(default=False, verbose_name='Right answer')
 
     def __str__(self):
@@ -40,7 +47,7 @@ class Surveys(models.Model):
         return f'{self.user.username} {self.date}'
 
 
-class Answers(models.Model):
+class UserAnswers(models.Model):
     survey = models.ForeignKey(Surveys, verbose_name='Survey', on_delete=models.CASCADE)
     question = models.ForeignKey(Questions, verbose_name='Question', on_delete=models.CASCADE)
     answer = models.BooleanField(default=False, verbose_name='Answer')

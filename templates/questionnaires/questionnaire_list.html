@@ -4,5 +4,8 @@ Questionnaire list
 {% endblock title %}
 
 {% block content %}
+    {% for item in object_list %}
+    <p>{{ item.header }}</p>
+    {% endfor %}
 
 {% endblock %}
